@@ -20,3 +20,4 @@ some selected examples of go context package
 * [Go Blog: Go Concurrency Patterns: Context](https://blog.golang.org/context)
 * [Go Blog: Go Concurrency Patterns: Pipelines and cancellation](https://blog.golang.org/pipelines)
 * [Context API explained](https://siadat.github.io/post/context)
+* [Using context cancellation in Go](https://www.sohamkamani.com/blog/golang/2018-06-17-golang-using-context-cancellation/)
