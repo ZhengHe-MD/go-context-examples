@@ -11,6 +11,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
+	go func() {
+		i := 0
+		for i < 10 {
+			log.Println(i)
+			time.Sleep(1*time.Second)
+			i += 1
+		}
+	}()
+
 	select {
 	case <-time.After(2*time.Second):
 		_, _ = w.Write([]byte("request processed"))
