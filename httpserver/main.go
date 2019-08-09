@@ -6,8 +6,32 @@ import (
 	"time"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	log.Println("start processing...")
+func fooHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("start foo...")
+
+	for i := 0; i < 10; i++ {
+		log.Println(i)
+		time.Sleep(1*time.Second)
+	}
+}
+
+func barHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("start bar...")
+
+	Loop:
+	for i := 0; i < 10; i++ {
+		log.Println(i)
+		select {
+		case <-time.After(1*time.Second):
+			// do nothing
+		case <-r.Context().Done():
+			break Loop
+		}
+	}
+}
+
+func bazHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("start baz...")
 
 	ctx := r.Context()
 
@@ -29,8 +53,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
 func main() {
-	if err := http.ListenAndServe(":8080", http.HandlerFunc(handler)); err != nil {
+	http.HandleFunc("/foo", fooHandler)
+	http.HandleFunc("/bar", barHandler)
+	http.HandleFunc("/baz", bazHandler)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Panicln(err)
 	}
 }
